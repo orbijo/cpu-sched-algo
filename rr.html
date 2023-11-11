@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Round Robin Calculator</title>
+    <link rel="stylesheet" href="css\style.css">
+
+    <script type="text/javascript" src="js\rr.js"></script>
+</head>
+
+<body>
+    <h1>Round Robin Calculator</h1>
+
+    <h2>Input:</h2>
+    <label for="arrivalTimes">Arrival Times:</label>
+    <input type="text" id="arrivalTimes" placeholder="0 3 4 6 10"><br>
+    <label for="burstTimes">Burst Times:</label>
+    <input type="text" id="burstTimes" placeholder="8 4 5 3 2"><br>
+    <label for="quantum">Time Quantum:</label>
+    <input min="1" value="1" type="number" id="quantum" placeholder="1"><br>
+    <button onclick="calculateRR()">Calculate Round Robin</button>
+
+    <h2>Output:</h2>
+    <h4 id="q">Quantum: </h4>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Process ID</th>
+                <th>Arrival Time</th>
+                <th>CPU Burst</th>
+                <th>Completion Time</th>
+                <th>Turnaround Time</th>
+                <th>Waiting Time</th>
+            </tr>
+        </thead>
+        <tbody id="outputTable">
+        </tbody>
+    </table>
+
+    <h2>Gantt Chart:</h2>
+
+    <div class="processes" id="processes">
+
+    </div>
+    <div class="timeline" id="timeline">
+
+    </div>
+
+
+    <h2>CPU Utilization: <span id="cpuUtil"></span></h2>
+    <h2>Average Turnaround Time: <span id="averageTAT"></span></h2>
+    <h2>Average Waiting Time: <span id="averageWT"></span></h2>
+
+</body>
+
+</html>

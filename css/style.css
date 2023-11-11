@@ -1,0 +1,39 @@
+.processes {
+  display: flex;
+  margin-left: 20px;
+}
+
+
+.item:not(:last-child) {
+  margin-right: -1px;
+}
+
+.item {
+  width: 40px;
+  height: 35px;
+  border: 1px solid black;
+  color: rgb(66, 66, 66);
+}
+
+.flex-center {
+  display: flex;
+  -webkit-box-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  align-items: center;
+}
+
+.timeline {
+  display: flex;
+}
+
+.time:not(:last-child) {
+  margin-right: -1px;
+}
+
+.time {
+  width: 40px;
+  height: 20px;
+  border: 1px solid rgb(255, 255, 255);
+  color: rgb(68, 78, 92);
+}
