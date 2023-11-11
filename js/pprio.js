@@ -1,4 +1,4 @@
-function calculateNPP() {
+function calculatePreemptPrio() {
     // reset function here
     // GET INPUTS
     const arrivalInput = document.getElementById("arrivalTimes").value;
@@ -17,6 +17,8 @@ function calculateNPP() {
         let process = { pid: i, arrivalTime: arrivalTimes[i], burstTime: burstTimes[i], priority: priorities[i], endTime: 0, turnaroundTime: 0, waitingTime: 0 };
         waitingQueue.push(process);
     }
+
+    const originalProcesses = JSON.parse(JSON.stringify(waitingQueue));
 
     // SIMULATE CPU SCHED
     // initialize variables
@@ -47,28 +49,42 @@ function calculateNPP() {
                     i--;
                 }
             }
-
             readyQueue.sort((a, b) => a.priority - b.priority);
+            while (readyQueue.length > 0) {
+                const currentProcess = readyQueue.shift();
+                let burst = currentProcess.burstTime;
+                // check for preemption
+                if (waitingQueue.length > 0 && waitingQueue[0].arrivalTime < currentProcess.burstTime + currentTime) {
+                    // preempt
+                    burst = waitingQueue[0].arrivalTime - currentTime;
 
-            // Calculate
-            while (readyQueue.length !== 0) {
-                let currentProcess = readyQueue.shift();
-                
-                currentTime += currentProcess.burstTime;
-                currentProcess.endTime = currentTime;
-                currentProcess.turnaroundTime = currentProcess.endTime - currentProcess.arrivalTime;
-                currentProcess.waitingTime = currentProcess.turnaroundTime - currentProcess.burstTime;
+                    currentTime += burst;
+                    currentProcess.burstTime -= burst;
 
-                processes.push(currentProcess);
-                ganttProcesses.push(String.fromCharCode(65 + currentProcess.pid));
-                ganttTimes.push(currentTime);
+                    ganttProcesses.push(String.fromCharCode(65 + currentProcess.pid));
+                    ganttTimes.push(currentTime);
+
+                    readyQueue.push(currentProcess);
+                    break;
+                } else {
+                    // No preemptio
+
+                    currentTime += burst;
+                    currentProcess.endTime = currentTime;
+                    currentProcess.turnaroundTime = currentProcess.endTime - currentProcess.arrivalTime;
+                    currentProcess.waitingTime = currentProcess.turnaroundTime - currentProcess.burstTime;
+
+                    processes.push(currentProcess);
+                    ganttProcesses.push(String.fromCharCode(65 + currentProcess.pid));
+                    ganttTimes.push(currentTime);
+                }
             }
 
         } else {
             // Idle
             ganttProcesses.push('idle');
             currentTime = waitingQueue[0].arrivalTime
-            ganttTimes.push(currentTime);
+            ganttTimes.push(currentTime);           
         }
     }
     processes.sort((a, b) => a.pid - b.pid);
@@ -81,15 +97,15 @@ function calculateNPP() {
     let averageTAT = 0;
     let averageWT = 0;
 
-    for (let i = 0; i < processes.length; i++) {
-        const processId = processes[i].pid;
+    for (let i = 0; i < originalProcesses.length; i++) {
+        const processId = originalProcesses[i].pid;
         const processName = String.fromCharCode(65 + processId);
-        const arrivalTime = processes[i].arrivalTime;
-        const burstTime = processes[i].burstTime;
-        const priority = processes[i].priority;
+        const arrivalTime = originalProcesses[i].arrivalTime;
+        const burstTime = originalProcesses[i].burstTime;
+        const priority = originalProcesses[i].priority;
         const completionTime = processes[i].endTime;
-        const turnaroundTime = processes[i].turnaroundTime;
-        const waitingTime = processes[i].waitingTime;
+        const turnaroundTime = completionTime - arrivalTime;;
+        const waitingTime = turnaroundTime - burstTime;
         cpuUtil += burstTime;
         outputTable.innerHTML += `<tr>
             <td>${processName}</td>
@@ -124,7 +140,7 @@ function calculateNPP() {
     averageTAT /= n;
     averageWT /= n;
 
-    document.getElementById("cpuUtil").textContent = `${((cpuUtil/currentTime)*100).toFixed(2)}%`;
+    document.getElementById("cpuUtil").textContent = `${((cpuUtil / currentTime) * 100).toFixed(2)}%`;
     document.getElementById("averageTAT").textContent = averageTAT.toFixed(2);
     document.getElementById("averageWT").textContent = averageWT.toFixed(2);
 
