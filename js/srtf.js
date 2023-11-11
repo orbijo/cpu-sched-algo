@@ -3,18 +3,16 @@ function calculatePreemptPrio() {
     // GET INPUTS
     const arrivalInput = document.getElementById("arrivalTimes").value;
     const burstInput = document.getElementById("burstTimes").value;
-    const prioritiesInput = document.getElementById("priorities").value;
 
     const arrivalTimes = arrivalInput.split(" ").map(Number);
     const burstTimes = burstInput.split(" ").map(Number);
-    const priorities = prioritiesInput.split(" ").map(Number);
 
     const n = arrivalTimes.length;
 
     const waitingQueue = [];
 
     for (let i = 0; i < n; i++) {
-        let process = { pid: i, arrivalTime: arrivalTimes[i], burstTime: burstTimes[i], priority: priorities[i], endTime: 0, turnaroundTime: 0, waitingTime: 0 };
+        let process = { pid: i, arrivalTime: arrivalTimes[i], burstTime: burstTimes[i], endTime: 0, turnaroundTime: 0, waitingTime: 0 };
         waitingQueue.push(process);
     }
 
@@ -49,7 +47,7 @@ function calculatePreemptPrio() {
                     i--;
                 }
             }
-            readyQueue.sort((a, b) => (a.priority == b.priority)? a.pid - b.pid : a.priority - b.priority);
+            readyQueue.sort((a, b) => (a.burstTime == b.burstTime)? a.pid - b.pid : a.burstTime - b.burstTime);
 
             while (readyQueue.length > 0) {
                 const currentProcess = readyQueue.shift();
@@ -104,7 +102,6 @@ function calculatePreemptPrio() {
         const processName = String.fromCharCode(65 + processId);
         const arrivalTime = originalProcesses[i].arrivalTime;
         const burstTime = originalProcesses[i].burstTime;
-        const priority = originalProcesses[i].priority;
         const completionTime = processes[i].endTime;
         const turnaroundTime = completionTime - arrivalTime;;
         const waitingTime = turnaroundTime - burstTime;
@@ -113,7 +110,6 @@ function calculatePreemptPrio() {
             <td>${processName}</td>
             <td>${arrivalTime}</td>
             <td>${burstTime}</td>
-            <td>${priority}</td>
             <td>${completionTime}</td>
             <td>${turnaroundTime}</td>
             <td>${waitingTime}</td>

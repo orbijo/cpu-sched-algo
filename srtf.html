@@ -2,23 +2,21 @@
 <html>
 
 <head>
-    <title>Preemptive Priority Calculator</title>
+    <title>SRTF Calculator</title>
     <link rel="stylesheet" href="css\style.css">
 
-    <script type="text/javascript" src="js\pprio.js"></script>
+    <script type="text/javascript" src="js\srtf.js"></script>
 </head>
 
 <body>
-    <h1>Preemptive Priority Calculator</h1>
+    <h1>SJF Calculator</h1>
 
     <h2>Input:</h2>
     <label for="arrivalTimes">Arrival Times:</label>
     <input type="text" id="arrivalTimes" placeholder="0 3 4 6 10"><br>
     <label for="burstTimes">Burst Times:</label>
     <input type="text" id="burstTimes" placeholder="8 4 5 3 2"><br>
-    <label for="priorities">Priorities:</label>
-    <input type="text" id="priorities" placeholder="2 1 2 1 1"><br>
-    <button onclick="calculatePreemptPrio()">Calculate Priority</button>
+    <button onclick="calculateSRTF()">Calculate SJF</button>
 
     <h2>Output:</h2>
     <table border="1">
@@ -27,7 +25,6 @@
                 <th>Process ID</th>
                 <th>Arrival Time</th>
                 <th>CPU Burst</th>
-                <th>Priority</th>
                 <th>Completion Time</th>
                 <th>Turnaround Time</th>
                 <th>Waiting Time</th>
