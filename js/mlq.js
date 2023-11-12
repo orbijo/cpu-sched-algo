@@ -1,7 +1,7 @@
-window.onload = function() {
+window.onload = function () {
     document.getElementById('optPrio').hidden = true;
     document.getElementById('optRRobin').hidden = true;
-  };
+};
 
 function calculateMLQ() {
     // GET INPUTS
@@ -9,6 +9,7 @@ function calculateMLQ() {
     const burstInput = document.getElementById("burstTimes").value;
     const prioritiesInput = document.getElementById("priorities").value;
     const pQLInput = document.getElementById("p_ql").value;
+    const quantum = +document.getElementById("quantum").value;
 
     const arrivalTimes = arrivalInput.split(" ").map(Number);
     const burstTimes = burstInput.split(" ").map(Number);
@@ -23,7 +24,7 @@ function calculateMLQ() {
     }
 
     // Initialize number of readyQueues;
-
+    const mlQueue = createLevels(levels);
 
     // Initialize Waiting Queue
     const n = arrivalTimes.length;
@@ -34,10 +35,76 @@ function calculateMLQ() {
     }
 
     console.log(waitingQueue);
+    console.log(`Quantum: ${quantum}`);
+    console.log(`Levels: ${levels}`);
+    console.log(selectedQueues);
     // selectedQueues ['fcfs', 'sjf', 'srtf', ...]
 
+    // Iterate through each scheduling queue
+    for (let i = 0; i < levels; i++) {
+        const queueType = selectedQueues[i];
 
+        switch (queueType) {
+            case 'fcfs':
+                fcfs(mlQueue[i], waitingQueue);
+                break;
+            case 'sjf':
+                sjf(mlQueue[i], waitingQueue);
+                break;
+            case 'srtf':
+                srtf(mlQueue[i], waitingQueue);
+                break;
+            case 'prio':
+                prio(mlQueue[i], waitingQueue);
+                break;
+            case 'npp':
+                npp(mlQueue[i], waitingQueue);
+                break;
+            case 'rr':
+                rr(mlQueue[i], waitingQueue, quantum);
+                break;
+        }
+    }
 
+    // Update Gantt Chart and display results
+    updateGanttChart();
+    displayResults();
+
+}
+
+function fcfs(queue, waitingQueue) {
+
+}
+
+function sjf(queue, waitingQueue) {
+
+}
+
+function srtf(queue, waitingQueue) {
+
+}
+
+function prio(queue, waitingQueue) {
+
+}
+
+function npp(queue, waitingQueue) {
+
+}
+
+function rr(queue, waitingQueue, quantum) {
+
+}
+
+function updateGanttChart(gantt, processes, times) {
+    var updatedGantt = JSON.parse(JSON.stringify(gantt));
+    updatedGantt.processes.push(processes);
+    updatedGantt.times.push(times);
+    return updatedGantt;
+}
+
+function displayResults() {
+    // Calculate and display CPU utilization, average turnaround time, and average waiting time
 }
 
 function createLevels(levels) {
@@ -73,7 +140,6 @@ function changeQueues() {
 }
 
 function changeOptions() {
-    console.log(`option changed.`)
     document.getElementById("optPrio").hidden = true;
     document.getElementById("optRRobin").hidden = true;
     const levels = +document.getElementById("levels").value;
@@ -82,10 +148,10 @@ function changeOptions() {
         const selectedValue = document.getElementById(`q${i}`).value;
         selectedQueues.push(selectedValue);
     }
-    if(selectedQueues.findIndex((elem)=>{ return elem=='npp'||elem=='prio'}) > -1){
+    if (selectedQueues.findIndex((elem) => { return elem == 'npp' || elem == 'prio' }) > -1) {
         document.getElementById("optPrio").hidden = false;
     }
-    if(selectedQueues.findIndex((elem)=>{ return elem=='rr'}) > -1){
+    if (selectedQueues.findIndex((elem) => { return elem == 'rr' }) > -1) {
         document.getElementById("optRRobin").hidden = false;
     }
 }
