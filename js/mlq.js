@@ -34,10 +34,10 @@ function calculateMLQ() {
         waitingQueue.push(process);
     }
 
-    console.log(waitingQueue);
-    console.log(`Quantum: ${quantum}`);
-    console.log(`Levels: ${levels}`);
-    console.log(selectedQueues);
+    // console.log(waitingQueue);
+    // console.log(`Quantum: ${quantum}`);
+    // console.log(`Levels: ${levels}`);
+    // console.log(selectedQueues);
     // selectedQueues ['fcfs', 'sjf', 'srtf', ...]
 
     // Iterate through each scheduling queue
@@ -66,14 +66,12 @@ function calculateMLQ() {
         }
     }
 
-    // Update Gantt Chart and display results
-    updateGanttChart();
-    displayResults();
+    
 
 }
 
 function fcfs(queue, waitingQueue) {
-
+    queue.sort
 }
 
 function sjf(queue, waitingQueue) {
@@ -97,10 +95,7 @@ function rr(queue, waitingQueue, quantum) {
 }
 
 function updateGanttChart(gantt, processes, times) {
-    var updatedGantt = JSON.parse(JSON.stringify(gantt));
-    updatedGantt.processes.push(processes);
-    updatedGantt.times.push(times);
-    return updatedGantt;
+    
 }
 
 function displayResults() {

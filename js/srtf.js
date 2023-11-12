@@ -1,4 +1,4 @@
-function calculatePreemptPrio() {
+function calculateSRTF() {
     // reset function here
     // GET INPUTS
     const arrivalInput = document.getElementById("arrivalTimes").value;
@@ -47,7 +47,7 @@ function calculatePreemptPrio() {
                     i--;
                 }
             }
-            readyQueue.sort((a, b) => (a.burstTime == b.burstTime)? a.pid - b.pid : a.burstTime - b.burstTime);
+            readyQueue.sort((a, b) => (a.burstTime == b.burstTime)? a.arrivalTime - b.arrivalTime : a.burstTime - b.burstTime);
 
             while (readyQueue.length > 0) {
                 const currentProcess = readyQueue.shift();
