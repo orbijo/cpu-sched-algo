@@ -48,7 +48,7 @@ function calculateMLFQ() {
         processes: [],
         times: []
     }
-    ganttChart = updateGanttChart(ganttChart, [], [currentTime]);
+    updateGanttChart(ganttChart, [], currentTime);
 
     // SIMULATION
 }
@@ -67,7 +67,7 @@ function fcfs(queue, currentTime, ganttChart, completedProcesses) {
 }
 
 function sjf(queue, currentTime, ganttChart, completedProcesses) {
-    queue.sort((a, b) => a.burstTime - b.burstTime);
+    queue.sort((a, b) => (a.burstTime == b.burstTime)?a.arrivalTime - b.arrivalTime:a.burstTime - b.burstTime);
 
     while(queue.length>0){
         const currentProcess = queue.shift();
@@ -79,32 +79,25 @@ function sjf(queue, currentTime, ganttChart, completedProcesses) {
     }
 }
 
-// function srtf(queue, waitingQueue) {
+function srtf(queue, waitingQueue) {
 
-// }
+}
 
-// function prio(queue, waitingQueue) {
+function prio(queue, waitingQueue) {
 
-// }
+}
 
-// function npp(queue, waitingQueue) {
+function npp(queue, waitingQueue) {
 
-// }
+}
 
-// function rr(queue, waitingQueue, quantum) {
+function rr(queue, waitingQueue, quantum) {
 
-// }
+}
 
-function updateGanttChart(gantt, processes, times) {
-    var updatedGantt = JSON.parse(JSON.stringify(gantt));
-    
-    // Convert times to numbers
-    const numericTimes = times.map(Number);
-
-    updatedGantt.processes = updatedGantt.processes.concat(processes);
-    updatedGantt.times = updatedGantt.times.concat(numericTimes);
-    
-    return updatedGantt;
+function updateGanttChart(gantt, processes, time) {
+    gantt.processes.concat(processes);
+    gantt.times.push(time);
 }
 
 
